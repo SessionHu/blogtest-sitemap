@@ -29,11 +29,11 @@ jobs:
         run: java -jar ./build/btsm.jar
       - name: Commit & Push
         run: |
+          git config user.name "github-actions"
+          git config user.email "github-actions@github.com"
           git checkout --orphan hidden
           cp ./run/sitemap.xml .
           git add sitemap.xml
           git commit sitemap.xml -m "feat: sitemap"
-          git config user.name "github-actions"
-          git config user.email "github-actions@github.com"
           git remote set-url origin https://user:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}
           git push origin hidden -f
