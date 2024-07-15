@@ -164,7 +164,7 @@ public class Main {
                 files = new File[] { file };
             }
             // add "/#!"
-            if (!path.endsWith(".json")) {
+            if (!path.endsWith(".json") && !path.equals("/")) {
                 path = "/#!" + path;
             }
             // uri
