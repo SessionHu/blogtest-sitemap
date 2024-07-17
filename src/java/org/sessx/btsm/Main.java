@@ -24,34 +24,41 @@ public class Main {
 
     public static final String RUN_PATH = "./run".replace("/", File.separator);
     public static final String RUN_REPO = RUN_PATH + "/repo".replace("/", File.separator);
+    public static final String RUN_ND_REPO = RUN_PATH + "/ndrepo".replace("/", File.separator);
     public static final String RUN_OUT = RUN_PATH + "/sitemap.xml".replace("/", File.separator);
+    public static final String RUN_ND_OUT = RUN_PATH + "/ndsitemap.xml".replace("/", File.separator);
 
     public static void main(String[] args) throws Exception {
         // git repo
-        File dir = cloneOrPull("https://github.com/SessionHu/blogtest");
+        File dir = cloneOrPull("https://github.com/SessionHu/blogtest", RUN_REPO);
         // uris
-        List<File> fileList = ls(dir);
+        List<File> fileList = ls(dir, RUN_REPO);
         Map<URI, File[]> fileUriMap = fileListToMap(fileList);
         // xml
-        Document document = createXMLDocument();
-        createXMLSitemap(document, fileUriMap, "https://sess.xhustudio.eu.org");
-        documentToFile(document, new File(RUN_OUT));
+        Document documentMain = createXMLDocument();
+        createXMLSitemap(documentMain, fileUriMap, "https://sess.xhustudio.eu.org");
+        documentToFile(documentMain, new File(RUN_OUT));
+        Document documentNetdisk = createXMLDocument();
+        createNetdiskXMLSitemapDocument(documentNetdisk, "https://netdisk.xhustudio.eu.org");
+        documentToFile(documentNetdisk, new File(RUN_ND_OUT));
+        // exit
+        System.out.println("Done!");
     }
 
     // #region shell
 
-    public static List<File> ls(File dir) throws IOException {
+    public static List<File> ls(File dir, String repoPath) throws IOException {
         List<File> fileList = new ArrayList<>();
         for (File f : dir.listFiles()) {
             if (f.isDirectory()) {
                 if (f.getName().startsWith(".git")) {
                     continue;
                 } else {
-                    fileList.addAll(ls(f));
+                    fileList.addAll(ls(f, repoPath));
                     continue;
                 }
             }
-            String fname = f.getPath().replaceFirst(RUN_REPO, "");
+            String fname = f.getPath().replaceFirst(repoPath, "");
             System.out.printf("- %6d %s\n", f.length(), fname);
             fileList.add(f);
         }
@@ -69,8 +76,8 @@ public class Main {
 
     // #region git
 
-    public static File cloneOrPull(String url) throws IOException {
-        File file = new File(RUN_REPO);
+    public static File cloneOrPull(String url, String path) throws IOException {
+        File file = new File(path);
         String[] cmd;
         if (!file.exists()) {
             cmd = new String[] {
@@ -87,13 +94,13 @@ public class Main {
         return file;
     }
 
-    public static String getFileLastModified(File f) throws IOException {
-        String relpath = f.getPath().replaceFirst(RUN_REPO, ".");
+    public static String getFileLastModified(File f, String repoPath) throws IOException {
+        String relpath = f.getPath().replaceFirst(repoPath, ".");
         String[] cmd = {
                 "git", "--no-pager", "log", "--pretty=format:%aI", "--max-count=1", "--", relpath
         };
         System.out.println("Running: " + Arrays.toString(cmd));
-        Process proc = new ProcessBuilder(cmd).directory(new File(RUN_REPO)).start();
+        Process proc = new ProcessBuilder(cmd).directory(new File(repoPath)).start();
         return procStdoutToString(proc);
     }
 
@@ -140,7 +147,8 @@ public class Main {
         for (File file : fileList) {
             String path = file.getPath().replaceFirst(RUN_REPO, "");
             // invaild page to user
-            if (path.endsWith(".css") || path.endsWith(".js") || path.startsWith("/.")) {
+            if (path.endsWith(".css") || path.endsWith(".js") || path.endsWith(".json") ||
+                    path.startsWith("/.")) {
                 continue;
             }
             // replace
@@ -164,7 +172,7 @@ public class Main {
                 files = new File[] { file };
             }
             // add "/#!"
-            if (!path.endsWith(".json") && !path.equals("/")) {
+            if (!path.equals("/")) {
                 path = "/#!" + path;
             }
             // uri
@@ -206,15 +214,15 @@ public class Main {
             // lastmod
             Element lastmod = document.createElement("lastmod");
             if (entry.getValue().length > 1) {
-                OffsetDateTime offdt0 = OffsetDateTime.parse(getFileLastModified(entry.getValue()[0]));
-                OffsetDateTime offdt1 = OffsetDateTime.parse(getFileLastModified(entry.getValue()[1]));
+                OffsetDateTime offdt0 = OffsetDateTime.parse(getFileLastModified(entry.getValue()[0], RUN_REPO));
+                OffsetDateTime offdt1 = OffsetDateTime.parse(getFileLastModified(entry.getValue()[1], RUN_REPO));
                 if (offdt0.isAfter(offdt1)) {
                     lastmod.setTextContent(offdt0.format(DateTimeFormatter.ISO_OFFSET_DATE_TIME));
                 } else {
                     lastmod.setTextContent(offdt1.format(DateTimeFormatter.ISO_OFFSET_DATE_TIME));
                 }
             } else {
-                lastmod.setTextContent(getFileLastModified(entry.getValue()[0]));
+                lastmod.setTextContent(getFileLastModified(entry.getValue()[0], RUN_REPO));
             }
             url.appendChild(lastmod);
             // changefreq & priority
@@ -250,6 +258,39 @@ public class Main {
             url.appendChild(priority);
         }
         document.appendChild(urlset);
+    }
+
+    public static void createNetdiskXMLSitemapDocument(Document document, String sitePrefix) throws IOException {
+        // urlset
+        Element urlset = document.createElement("urlset");
+        urlset.setAttribute("xmlns", "http://www.sitemaps.org/schemas/sitemap/0.9");
+        document.appendChild(urlset);
+        // clone & ls
+        File dir = cloneOrPull("https://github.com/SessionHu/gh-netdisk", RUN_ND_REPO);
+        List<File> fileList = ls(dir, RUN_ND_REPO);
+        // add for each
+        for (File file : fileList) {
+            String relpath = file.getPath().replaceFirst(RUN_ND_REPO, ".");
+            if (!relpath.startsWith("./posts/")) {
+                // not self-created resources, skip
+                continue;
+            }
+            // url
+            Element url = document.createElement("url");
+            urlset.appendChild(url);
+            // loc
+            Element loc = document.createElement("loc");
+            loc.setTextContent(relpath.replaceFirst(".", sitePrefix));
+            url.appendChild(loc);
+            // lastmod
+            Element lastmod = document.createElement("lastmod");
+            lastmod.setTextContent(getFileLastModified(file, RUN_ND_REPO));
+            url.appendChild(lastmod);
+            // changefreq
+            Element changefreq = document.createElement("changefreq");
+            changefreq.setTextContent("never");
+            url.appendChild(changefreq);
+        }
     }
 
     // #endregion
