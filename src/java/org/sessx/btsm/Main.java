@@ -271,7 +271,7 @@ public class Main {
         // add for each
         for (File file : fileList) {
             String relpath = file.getPath().replaceFirst(RUN_ND_REPO, ".");
-            if (!relpath.startsWith("./posts/")) {
+            if (!relpath.startsWith("./posts/") && !relpath.endsWith(".html")) {
                 // not self-created resources, skip
                 continue;
             }
@@ -280,7 +280,11 @@ public class Main {
             urlset.appendChild(url);
             // loc
             Element loc = document.createElement("loc");
-            loc.setTextContent(relpath.replaceFirst(".", sitePrefix));
+            if (relpath.equals("./index.html")) {
+                loc.setTextContent(sitePrefix + "/");
+            } else {
+                loc.setTextContent(relpath.replaceFirst(".", sitePrefix));
+            }
             url.appendChild(loc);
             // lastmod
             Element lastmod = document.createElement("lastmod");
