@@ -33,7 +33,7 @@ jobs:
           git config user.email "github-actions@github.com"
           sh -c "git branch -D hidden | cat"
           git checkout --orphan hidden
-          cp ./run/*sitemap.xml ./run/latest.log .
+          cp ./run/*.xml ./run/latest.log .
           git add *.xml latest.log
           git commit *sitemap.xml latest.log -m "feat: sitemap"
           git remote set-url origin https://user:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}
