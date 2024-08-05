@@ -34,7 +34,7 @@ jobs:
           sh -c "git branch -D hidden | cat"
           git checkout --orphan hidden
           cp ./run/*sitemap.xml ./run/latest.log .
-          git add *sitemap.xml latest.log
+          git add *.xml latest.log
           git commit *sitemap.xml latest.log -m "feat: sitemap"
           git remote set-url origin https://user:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}
           git push origin hidden -f

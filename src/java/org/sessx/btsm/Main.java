@@ -1,18 +1,23 @@
 package org.sessx.btsm;
 
+import java.io.BufferedReader;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.net.URI;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
+import java.time.ZoneOffset;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
+
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
@@ -26,6 +31,7 @@ public class Main {
     public static final String RUN_REPO = RUN_PATH + "/repo".replace("/", File.separator);
     public static final String RUN_ND_REPO = RUN_PATH + "/ndrepo".replace("/", File.separator);
     public static final String RUN_OUT = RUN_PATH + "/sitemap.xml".replace("/", File.separator);
+    public static final String RUN_FEED_OUT = RUN_PATH + "/feed.xml".replace("/", File.separator);
     public static final String RUN_ND_OUT = RUN_PATH + "/ndsitemap.xml".replace("/", File.separator);
 
     public static void main(String[] args) throws Exception {
@@ -36,8 +42,10 @@ public class Main {
         Map<URI, File[]> fileUriMap = fileListToMap(fileList);
         // xml
         Document documentMain = createXMLDocument();
-        createXMLSitemap(documentMain, fileUriMap, "https://sess.xhustudio.eu.org");
+        Document documentFeed = createXMLDocument();
+        createXMLSitemap(documentMain, documentFeed, fileUriMap, "https://sess.xhustudio.eu.org");
         documentToFile(documentMain, new File(RUN_OUT));
+        documentToFile(documentFeed, new File(RUN_FEED_OUT));
         Document documentNetdisk = createXMLDocument();
         createNetdiskXMLSitemapDocument(documentNetdisk, "https://netdisk.xhustudio.eu.org");
         documentToFile(documentNetdisk, new File(RUN_ND_OUT));
@@ -72,6 +80,19 @@ public class Main {
             }
         }
         f.delete();
+    }
+
+    public static String readMarkdownH1(File md) {
+        System.out.println("Reading Markdown H1: " + md.getName());
+        try (BufferedReader in = new BufferedReader(new InputStreamReader(md.toURI().toURL().openStream()))) {
+            String line = in.readLine();
+            if (line.startsWith("# ")) {
+                return line.substring(2);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return md.getName().replace(".md", "");
     }
 
     // #region git
@@ -199,32 +220,77 @@ public class Main {
         return outputFile;
     }
 
-    public static void createXMLSitemap(Document document, Map<URI, File[]> fileUriMap, String sitePrefix)
+    public static void createXMLSitemap(Document document, Document documentFeed, Map<URI, File[]> fileUriMap, String sitePrefix)
             throws IOException {
+        // rss root
+        Element channel; {
+            Element rss = documentFeed.createElement("rss");
+            rss.setAttribute("version", "2.0");
+            rss.setAttribute("xmlns:atom", "http://www.w3.org/2005/Atom");
+            documentFeed.appendChild(rss);
+            channel = documentFeed.createElement("channel");
+            rss.appendChild(channel);
+            Element title = documentFeed.createElement("title");
+            title.setTextContent("SЕSSのB10GТЕ5Т");
+            channel.appendChild(title);
+            Element link = documentFeed.createElement("link");
+            link.setTextContent(sitePrefix + "/");
+            channel.appendChild(link);
+            Element description = documentFeed.createElement("description");
+            description.setTextContent("Session的个人博客, 这里有各种类型的有趣的文章内容, 网站基于纯前端构建.");
+            channel.appendChild(description);
+            Element language = documentFeed.createElement("language");
+            language.setTextContent("zh-CN");
+            channel.appendChild(language);
+            Element copyright = documentFeed.createElement("copyright");
+            int year = OffsetDateTime.now(ZoneOffset.UTC).getYear();
+            copyright.setTextContent((year == 2024 ? 2024 : ("2024-" + year)) + " SessionHu");
+            channel.appendChild(copyright);
+            Element atomLink = documentFeed.createElement("atom:link");
+            atomLink.setAttribute("href", sitePrefix + "/feed.xml");
+            atomLink.setAttribute("rel", "self");
+            channel.appendChild(atomLink);
+        }
+        // sitemap & rss main
         Element urlset = document.createElement("urlset");
         urlset.setAttribute("xmlns", "http://www.sitemaps.org/schemas/sitemap/0.9");
         for (Map.Entry<URI, File[]> entry : fileUriMap.entrySet()) {
-            // url
+            // url / item
             Element url = document.createElement("url");
             urlset.appendChild(url);
-            // loc
+            Element item = documentFeed.createElement("item");
+            if (entry.getKey().toString().startsWith("/#!/posts")) {
+                channel.appendChild(item);
+            }
+            // loc / link / guid
             Element loc = document.createElement("loc");
             loc.setTextContent(sitePrefix + entry.getKey().toASCIIString());
             url.appendChild(loc);
-            // lastmod
+            Element link = documentFeed.createElement("link");
+            link.setTextContent(sitePrefix + entry.getKey().toASCIIString());
+            item.appendChild(link);
+            Element guid = documentFeed.createElement("guid");
+            guid.setTextContent(sitePrefix + entry.getKey().toASCIIString().replace("#!/", ""));
+            item.appendChild(guid);
+            // lastmod / pubDate
             Element lastmod = document.createElement("lastmod");
+            Element pubDate = documentFeed.createElement("pubDate");
+            OffsetDateTime offdt0 = OffsetDateTime.parse(getFileLastModified(entry.getValue()[0], RUN_REPO));
             if (entry.getValue().length > 1) {
-                OffsetDateTime offdt0 = OffsetDateTime.parse(getFileLastModified(entry.getValue()[0], RUN_REPO));
                 OffsetDateTime offdt1 = OffsetDateTime.parse(getFileLastModified(entry.getValue()[1], RUN_REPO));
                 if (offdt0.isAfter(offdt1)) {
                     lastmod.setTextContent(offdt0.format(DateTimeFormatter.ISO_OFFSET_DATE_TIME));
+                    pubDate.setTextContent(offdt0.format(DateTimeFormatter.RFC_1123_DATE_TIME));
                 } else {
                     lastmod.setTextContent(offdt1.format(DateTimeFormatter.ISO_OFFSET_DATE_TIME));
+                    pubDate.setTextContent(offdt1.format(DateTimeFormatter.RFC_1123_DATE_TIME));
                 }
             } else {
-                lastmod.setTextContent(getFileLastModified(entry.getValue()[0], RUN_REPO));
+                lastmod.setTextContent(offdt0.format(DateTimeFormatter.ISO_OFFSET_DATE_TIME));
+                pubDate.setTextContent(offdt0.format(DateTimeFormatter.RFC_1123_DATE_TIME));
             }
             url.appendChild(lastmod);
+            item.appendChild(pubDate);
             // changefreq & priority
             Element changefreq = document.createElement("changefreq");
             Element priority = document.createElement("priority");
@@ -238,6 +304,10 @@ public class Main {
                     changefreq.setTextContent("never");
                 }
                 priority.setTextContent("0.9");
+                // title
+                Element title = documentFeed.createElement("title");
+                title.setTextContent(readMarkdownH1(entry.getValue()[0]));
+                item.appendChild(title);
             } else if (entry.getKey().toString().startsWith("/#!/category")) {
                 // category
                 changefreq.setTextContent("weekly");
