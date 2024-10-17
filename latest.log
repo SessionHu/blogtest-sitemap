@@ -1,0 +1,77 @@
+Running: [git, clone, https://github.com/SessionHu/blogtest, ./run/repo]
+Cloning into './run/repo'...
+Process exit with code 0
+-   2053 /friends.html
+-  17059 /about.html
+-    690 /category.html
+-   5792 /scripts/laylunar.js
+-  33475 /scripts/index.js
+-  11809 /scripts/md2html.js
+-      8 /.gitignore
+-   1065 /LICENSE.txt
+-   8205 /index.html
+-   3413 /friends.json
+-  15086 /favicon.ico
+-    361 /README.md
+-   1179 /home.html
+-   1503 /styles/dark-fix.css
+-   1626 /styles/laylunar.css
+-   6150 /styles/style.css
+-   2493 /posts/index.json
+-  10776 /posts/2024/win-size-never-greater-than-16384.md
+-   7724 /posts/2024/inst-arch-kvm-self.md
+-   7397 /posts/2024/send-files-to-phone.md
+-   8809 /posts/2024/bac-out-of-date.md
+-  10440 /posts/2024/deb-kde-wayland-guide.md
+Running: [git, --no-pager, log, --pretty=format:%aI, --max-count=1, --, ./favicon.ico]
+Running: [git, --no-pager, log, --pretty=format:%aI, --max-count=1, --, ./posts/2024/deb-kde-wayland-guide.md]
+Reading Markdown H1: deb-kde-wayland-guide.md
+Running: [git, --no-pager, log, --pretty=format:%aI, --max-count=1, --, ./LICENSE.txt]
+Running: [git, --no-pager, log, --pretty=format:%aI, --max-count=1, --, ./posts/2024/send-files-to-phone.md]
+Reading Markdown H1: send-files-to-phone.md
+Running: [git, --no-pager, log, --pretty=format:%aI, --max-count=1, --, ./posts/2024/inst-arch-kvm-self.md]
+Reading Markdown H1: inst-arch-kvm-self.md
+Running: [git, --no-pager, log, --pretty=format:%aI, --max-count=1, --, ./posts/2024/win-size-never-greater-than-16384.md]
+Reading Markdown H1: win-size-never-greater-than-16384.md
+Running: [git, --no-pager, log, --pretty=format:%aI, --max-count=1, --, ./posts/2024/bac-out-of-date.md]
+Reading Markdown H1: bac-out-of-date.md
+Running: [git, --no-pager, log, --pretty=format:%aI, --max-count=1, --, ./friends.html]
+Running: [git, --no-pager, log, --pretty=format:%aI, --max-count=1, --, ./category.html]
+Running: [git, --no-pager, log, --pretty=format:%aI, --max-count=1, --, ./posts/index.json]
+Running: [git, --no-pager, log, --pretty=format:%aI, --max-count=1, --, ./README.md]
+Running: [git, --no-pager, log, --pretty=format:%aI, --max-count=1, --, ./about.html]
+Running: [git, --no-pager, log, --pretty=format:%aI, --max-count=1, --, ./index.html]
+Running: [git, --no-pager, log, --pretty=format:%aI, --max-count=1, --, ./posts/index.json]
+Running: [git, clone, https://github.com/SessionHu/gh-netdisk, ./run/ndrepo]
+Cloning into './run/ndrepo'...
+Process exit with code 0
+-  20139 /LICENSE
+-    939 /ndsitemap.xml
+- 537188 /images/webp/Miracle_Forest__VIP_Mix__jacket.webp
+- 426496 /images/webp/今年も「雪降り、メリクリ」目指して頑張ります！！_jacket.webp
+- 300216 /images/webp/Broken_Sky_jacket.webp
+-   4324 /images/svg/Wayland_Logo.svg
+-  48548 /images/svg/file_transfer.svg
+-    946 /images/svg/CF_logomark.svg
+- 730029 /images/png/Rainy_Heart_jacket.png
+-  45069 /images/jpeg/bili-face-original.jpg
+-  16875 /images/jpeg/102411014.jpg
+-    642 /index.html
+-     51 /README.md
+-    989 /sources.json
+-   4069 /posts/2024/inst-arch-kvm-self/Screenshot_20240804_185343.png
+- 163576 /posts/2024/inst-arch-kvm-self/Screenshot_20240804_172204.png
+-  10017 /posts/2024/inst-arch-kvm-self/Screenshot_20240804_210956.png
+- 407847 /posts/2024/win-size-never-greater-than-16384/Screenshot_20240702_095838.png
+- 286742 /posts/2024/win-size-never-greater-than-16384/Screenshot_20240702_100916.png
+- 373447 /posts/2024/win-size-never-greater-than-16384/Screenshot_20240702_083736.png
+-  89761 /posts/2024/win-size-never-greater-than-16384/Screenshot_20240702_101435.png
+Running: [git, --no-pager, log, --pretty=format:%aI, --max-count=1, --, ./index.html]
+Running: [git, --no-pager, log, --pretty=format:%aI, --max-count=1, --, ./posts/2024/inst-arch-kvm-self/Screenshot_20240804_185343.png]
+Running: [git, --no-pager, log, --pretty=format:%aI, --max-count=1, --, ./posts/2024/inst-arch-kvm-self/Screenshot_20240804_172204.png]
+Running: [git, --no-pager, log, --pretty=format:%aI, --max-count=1, --, ./posts/2024/inst-arch-kvm-self/Screenshot_20240804_210956.png]
+Running: [git, --no-pager, log, --pretty=format:%aI, --max-count=1, --, ./posts/2024/win-size-never-greater-than-16384/Screenshot_20240702_095838.png]
+Running: [git, --no-pager, log, --pretty=format:%aI, --max-count=1, --, ./posts/2024/win-size-never-greater-than-16384/Screenshot_20240702_100916.png]
+Running: [git, --no-pager, log, --pretty=format:%aI, --max-count=1, --, ./posts/2024/win-size-never-greater-than-16384/Screenshot_20240702_083736.png]
+Running: [git, --no-pager, log, --pretty=format:%aI, --max-count=1, --, ./posts/2024/win-size-never-greater-than-16384/Screenshot_20240702_101435.png]
+Done!
