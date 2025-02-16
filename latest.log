@@ -1,0 +1,90 @@
+Running: [git, clone, https://github.com/SessionHu/blogtest, ./run/repo]
+Cloning into './run/repo'...
+Process exit with code 0
+-   8809 /posts/2024/bac-out-of-date.md
+-   7397 /posts/2024/send-files-to-phone.md
+-  10440 /posts/2024/deb-kde-wayland-guide.md
+-   7724 /posts/2024/inst-arch-kvm-self.md
+-  10776 /posts/2024/win-size-never-greater-than-16384.md
+-   2137 /posts/index.json
+-   2576 /yarn.lock
+-     65 /.gitignore
+-  17268 /front/about.html
+-  15086 /front/favicon.ico
+-   1662 /front/friends.html
+-    212 /front/category.html
+-   3262 /front/friends.json
+-   6214 /front/index.html
+-    196 /front/404.html
+-   4908 /front/scripts/laylunar.js
+-  17974 /front/scripts/index.js
+-   1312 /front/home.html
+-   5358 /front/styles/style.css
+-   1626 /front/styles/laylunar.css
+-    780 /front/styles/dark-fix.css
+-    837 /front/styles/atom.css
+-   1788 /back/router.js
+-   2988 /back/server.js
+-   3787 /back/sdom.js
+-    934 /back/build.js
+-  12598 /back/tsconfig.json
+-    635 /back/sessx.d.ts
+-   4037 /back/md2html.js
+-  10050 /back/ssg.js
+-   1066 /LICENSE.txt
+-    618 /package.json
+-    361 /README.md
+Running: [git, --no-pager, log, --pretty=format:%aI, --max-count=1, --, ./front/404.html]
+Running: [git, --no-pager, log, --pretty=format:%aI, --max-count=1, --, ./LICENSE.txt]
+Running: [git, --no-pager, log, --pretty=format:%aI, --max-count=1, --, ./posts/2024/send-files-to-phone.md]
+Reading Markdown H1: send-files-to-phone.md
+Running: [git, --no-pager, log, --pretty=format:%aI, --max-count=1, --, ./posts/2024/inst-arch-kvm-self.md]
+Reading Markdown H1: inst-arch-kvm-self.md
+Running: [git, --no-pager, log, --pretty=format:%aI, --max-count=1, --, ./front/home.html]
+Running: [git, --no-pager, log, --pretty=format:%aI, --max-count=1, --, ./front/index.html]
+Running: [git, --no-pager, log, --pretty=format:%aI, --max-count=1, --, ./posts/2024/win-size-never-greater-than-16384.md]
+Reading Markdown H1: win-size-never-greater-than-16384.md
+Running: [git, --no-pager, log, --pretty=format:%aI, --max-count=1, --, ./README.md]
+Running: [git, --no-pager, log, --pretty=format:%aI, --max-count=1, --, ./yarn.lock]
+Running: [git, --no-pager, log, --pretty=format:%aI, --max-count=1, --, ./posts/2024/deb-kde-wayland-guide.md]
+Reading Markdown H1: deb-kde-wayland-guide.md
+Running: [git, --no-pager, log, --pretty=format:%aI, --max-count=1, --, ./front/category.html]
+Running: [git, --no-pager, log, --pretty=format:%aI, --max-count=1, --, ./back/sessx.d.ts]
+Running: [git, --no-pager, log, --pretty=format:%aI, --max-count=1, --, ./front/favicon.ico]
+Running: [git, --no-pager, log, --pretty=format:%aI, --max-count=1, --, ./front/about.html]
+Running: [git, --no-pager, log, --pretty=format:%aI, --max-count=1, --, ./posts/2024/bac-out-of-date.md]
+Reading Markdown H1: bac-out-of-date.md
+Running: [git, --no-pager, log, --pretty=format:%aI, --max-count=1, --, ./front/friends.html]
+Running: [git, clone, https://github.com/SessionHu/gh-netdisk, ./run/ndrepo]
+Cloning into './run/ndrepo'...
+Process exit with code 0
+-  20139 /LICENSE
+- 286742 /posts/2024/win-size-never-greater-than-16384/Screenshot_20240702_100916.png
+- 407847 /posts/2024/win-size-never-greater-than-16384/Screenshot_20240702_095838.png
+-  89761 /posts/2024/win-size-never-greater-than-16384/Screenshot_20240702_101435.png
+- 373447 /posts/2024/win-size-never-greater-than-16384/Screenshot_20240702_083736.png
+-  10017 /posts/2024/inst-arch-kvm-self/Screenshot_20240804_210956.png
+- 163576 /posts/2024/inst-arch-kvm-self/Screenshot_20240804_172204.png
+-   4069 /posts/2024/inst-arch-kvm-self/Screenshot_20240804_185343.png
+-    939 /ndsitemap.xml
+-    642 /index.html
+-  45069 /images/jpeg/bili-face-original.jpg
+-  16875 /images/jpeg/102411014.jpg
+- 730029 /images/png/Rainy_Heart_jacket.png
+-  48548 /images/svg/file_transfer.svg
+-    946 /images/svg/CF_logomark.svg
+-   4324 /images/svg/Wayland_Logo.svg
+- 300216 /images/webp/Broken_Sky_jacket.webp
+- 537188 /images/webp/Miracle_Forest__VIP_Mix__jacket.webp
+- 426496 /images/webp/今年も「雪降り、メリクリ」目指して頑張ります！！_jacket.webp
+-    989 /sources.json
+-     51 /README.md
+Running: [git, --no-pager, log, --pretty=format:%aI, --max-count=1, --, ./posts/2024/win-size-never-greater-than-16384/Screenshot_20240702_100916.png]
+Running: [git, --no-pager, log, --pretty=format:%aI, --max-count=1, --, ./posts/2024/win-size-never-greater-than-16384/Screenshot_20240702_095838.png]
+Running: [git, --no-pager, log, --pretty=format:%aI, --max-count=1, --, ./posts/2024/win-size-never-greater-than-16384/Screenshot_20240702_101435.png]
+Running: [git, --no-pager, log, --pretty=format:%aI, --max-count=1, --, ./posts/2024/win-size-never-greater-than-16384/Screenshot_20240702_083736.png]
+Running: [git, --no-pager, log, --pretty=format:%aI, --max-count=1, --, ./posts/2024/inst-arch-kvm-self/Screenshot_20240804_210956.png]
+Running: [git, --no-pager, log, --pretty=format:%aI, --max-count=1, --, ./posts/2024/inst-arch-kvm-self/Screenshot_20240804_172204.png]
+Running: [git, --no-pager, log, --pretty=format:%aI, --max-count=1, --, ./posts/2024/inst-arch-kvm-self/Screenshot_20240804_185343.png]
+Running: [git, --no-pager, log, --pretty=format:%aI, --max-count=1, --, ./index.html]
+Done!
